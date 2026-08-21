@@ -666,7 +666,7 @@ GameObject:
   - component: {fileID: 9201240791290519642}
   - component: {fileID: 8053047021397388455}
   m_Layer: 5
-  m_Name: Setting_Subline
+  m_Name: Setting_Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -840,7 +840,7 @@ GameObject:
   - component: {fileID: 6530274167343178682}
   - component: {fileID: 2065809616479143851}
   m_Layer: 5
-  m_Name: Info_Sound_Button
+  m_Name: Setting_Info_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -957,6 +957,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8508119286195719708}
+  - component: {fileID: 2043894338946632646}
   m_Layer: 5
   m_Name: Setting_Window
   m_TagString: Untagged
@@ -990,6 +991,90 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2043894338946632646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2649732169859891715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9527859e75eaa4e4487a24c21c9c79b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SettingWindow
+  _firstSettingType: 0
+  _settingButtons:
+  - _settingType: 0
+    _settingButton: {fileID: 2825664961509169495}
+    _onClickEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2043894338946632646}
+          m_TargetAssemblyTypeName: SettingWindow, Assembly-CSharp
+          m_MethodName: OnClickGraphicSettingButton
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _settingType: 1
+    _settingButton: {fileID: 6181440866670019579}
+    _onClickEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2043894338946632646}
+          m_TargetAssemblyTypeName: SettingWindow, Assembly-CSharp
+          m_MethodName: OnClickSoundSettingButton
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _settingType: 2
+    _settingButton: {fileID: 2065809616479143851}
+    _onClickEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2043894338946632646}
+          m_TargetAssemblyTypeName: SettingWindow, Assembly-CSharp
+          m_MethodName: OnClickInfoSettingButton
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _settingType: 2
+    _settingButton: {fileID: 2065809616479143851}
+    _onClickEvent:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2043894338946632646}
+          m_TargetAssemblyTypeName: SettingWindow, Assembly-CSharp
+          m_MethodName: OnClickInfoSettingButton
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _exitSettingButton: {fileID: 4064886273983351561}
+  _settingName: {fileID: 3861034435545482192}
 --- !u!1 &2941215604534382386
 GameObject:
   m_ObjectHideFlags: 0
@@ -1744,7 +1829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4038026595066445864}
   m_Layer: 5
-  m_Name: Setting_Name
+  m_Name: Setting_Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1780,7 +1865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9027937084681497330}
   m_Layer: 5
-  m_Name: Setting_SubName
+  m_Name: Setting_Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
