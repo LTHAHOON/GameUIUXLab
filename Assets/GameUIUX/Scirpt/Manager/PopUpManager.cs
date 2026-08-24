@@ -1,8 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public enum PopUpState
@@ -13,6 +9,11 @@ public enum PopUpState
 
 public abstract class PopUpWindow : MonoBehaviour
 {
+    public bool InitCompleted { get; private set; } = false;
+    protected virtual void Awake()
+    {
+        InitCompleted = true;
+    }
 }
 
 public class PopUpManager : MonoBehaviour
@@ -20,54 +21,71 @@ public class PopUpManager : MonoBehaviour
     [SerializeField]
     private Canvas _popUpCanvas;
     public static PopUpManager Instance { get; private set; }
-    private List<PopUpWindow> _popUpInstanceList;
+    private List<PopUpWindow> _opendPopUpInstances;
 
     private void Awake()
     {
         Instance = this;
-        _popUpInstanceList = new();
+        _opendPopUpInstances = new();
     }
 
-    public void ChangePopUpState(PopUpState popUpState, PopUpWindow popUpWindow)
+    public T ChangePopUpState<T>(PopUpState popUpState, T popUpWindow) where T : PopUpWindow
     {
+        T changedPopUpWindow;
         switch (popUpState)
         {
             case PopUpState.Open:
-                OpenPopUpWindow(popUpWindow);
+                changedPopUpWindow = OpenPopUpWindow(popUpWindow);
                 break;
             case PopUpState.Close:
-                ClosePopUpWindow(popUpWindow);
+                changedPopUpWindow = ClosePopUpWindow(popUpWindow);
                 break;
+            default:
+                return null;
         }
+
+        return changedPopUpWindow;
     }
 
-    private void OpenPopUpWindow(PopUpWindow popUpWindow)
+    private T OpenPopUpWindow<T>(T popUpWindow) where T : PopUpWindow
     {
         Debug.Log(popUpWindow);
-        if (!_popUpInstanceList.Contains(popUpWindow))
+        if (!popUpWindow.InitCompleted)
         {
-            if (PrefabUtility.IsPartOfPrefabAsset(popUpWindow) && !PrefabUtility.IsPartOfPrefabInstance(popUpWindow))
-            {
-                popUpWindow = Instantiate(popUpWindow, _popUpCanvas.transform);
-            }
-            _popUpInstanceList.Add(popUpWindow);
+            popUpWindow = Instantiate(popUpWindow, _popUpCanvas.transform);
+        }
+        if (!_opendPopUpInstances.Contains(popUpWindow))
+        {
+            _opendPopUpInstances.Add(popUpWindow);
         }
         popUpWindow.gameObject.SetActive(true);
+        return popUpWindow;
     }
 
-    private void ClosePopUpWindow(PopUpWindow popUpWindow)
+    private T ClosePopUpWindow<T>(T popUpWindow) where T : PopUpWindow
     {
-        if (!_popUpInstanceList.Contains(popUpWindow))
+        if (!_opendPopUpInstances.Contains(popUpWindow))
         {
-            return;
+            return null;
         }
-        _popUpInstanceList.Remove(popUpWindow);
+        _opendPopUpInstances.Remove(popUpWindow);
         popUpWindow.gameObject.SetActive(false);
+        return popUpWindow;
     }
 
     public PopUpWindow GetLastPopUpWindow()
     {
-        return _popUpInstanceList[_popUpInstanceList.Count - 1];
+        if (_opendPopUpInstances == null || _opendPopUpInstances.Count <= 0)
+        {
+            return null;
+        }
+        return _opendPopUpInstances[_opendPopUpInstances.Count - 1];
+    }
+
+    public bool IsOpenPopUpWindow(PopUpWindow popUpWindow)
+    {
+        bool isOpen = _opendPopUpInstances.Contains(popUpWindow);
+        return isOpen;
     }
 }
 

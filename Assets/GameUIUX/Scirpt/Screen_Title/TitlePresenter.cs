@@ -7,23 +7,22 @@ public class TitlePresenter : UIPresenter<TitleView>
     [SerializeField]
     private string _playRootSceneName;
 
-    private TitleView _uiView;
-
-    protected override void Initialize(TitleView uiView)
+    protected override void Initialize(ref TitleView uiView)
     {
         CanvasDocument canvasDocument = GetCanvasDocument();
-        _uiView = new(canvasDocument);
+        uiView = new(canvasDocument);
     }
 
-    private void OnEnable()
+    protected override void ConnectWhenEnabled(TitleView uiView)
     {
-        _uiView.PlayButton.onClick.AddListener(OnClickPlayButton);
-        _uiView.SettingButton.onClick.AddListener(OnClickSettingButton);
+        uiView.PlayButton.onClick.AddListener(OnClickPlayButton);
+        uiView.SettingButton.onClick.AddListener(OnClickSettingButton);
     }
 
-    private void OnDisable()
+    protected override void DisconnectWhenDisabled(TitleView uiView)
     {
-        _uiView.PlayButton.onClick.RemoveListener(OnClickPlayButton);
+        uiView.PlayButton.onClick.RemoveListener(OnClickPlayButton);
+        uiView.SettingButton.onClick.RemoveListener(OnClickSettingButton);
     }
 
 
@@ -47,10 +46,12 @@ public class TitlePresenter : UIPresenter<TitleView>
         if (!_settingWindow)
         {
             _settingWindow = GetPopUpWindow<SettingWindow>();
+            _settingWindow = PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
         }
-
-        PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
-        _settingWindow = (SettingWindow)PopUpManager.Instance.GetLastPopUpWindow();
+        else
+        {
+            PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
+        }
     }
 
 }

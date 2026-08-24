@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,37 +13,78 @@ public class SceneLoadManager : MonoBehaviour
         Instance = this;
     }
 
-    public async void LoadScene_Async(string sceneName, LoadSceneMode loadSceneMode, Action onCompletedLoadScene = null)
+    public void LoadScene_Async(string sceneName, LoadSceneMode loadSceneMode, Action onCompletedLoadScene = null)
     {
-        Scene loadScene = SceneManager.GetSceneByName(sceneName);
-        await LoadScene_AsyncTask(loadScene.buildIndex, loadSceneMode, onCompletedLoadScene);
+        if (IsSceneLoaded(sceneName))
+        {
+            return;
+        }
+        if (HasNotloadedSceneInHierarchy(sceneName))
+        {
+            _ = UnloadScene_AsyncTask(sceneName, null);
+        }
+
+        _ = LoadScene_AsyncTask(sceneName, loadSceneMode, onCompletedLoadScene);
     }
 
-    public async void UnloadScene_Async(string sceneName)
+    public void UnloadScene_Async(string sceneName, Action onCompletedLoadScene = null)
     {
-        Scene loadScene = SceneManager.GetSceneByName(sceneName);
-        await UnloadScene_AsyncTask(loadScene.buildIndex);
+        if (!IsSceneLoaded(sceneName))
+        {
+            return;
+        }
+        Scene scene = SceneManager.GetSceneByName(sceneName);
+        _ = UnloadScene_AsyncTask(sceneName, onCompletedLoadScene);
     }
 
-    public async void UnloadActiveScene_Async()
+    public void UnloadActiveScene_Async(Action onCompletedLoadScene = null)
     {
         Scene activeScene = SceneManager.GetActiveScene();
-        await UnloadScene_AsyncTask(activeScene.buildIndex);
+        if (!activeScene.IsValid() || !activeScene.isLoaded)
+        {
+            return;
+        }
+        _ = UnloadScene_AsyncTask(activeScene.name, onCompletedLoadScene);
     }
 
-
-    private async Task LoadScene_AsyncTask(int sceneBuildIndex, LoadSceneMode loadSceneMode, Action onCompletedLoadScene)
+    private async Task LoadScene_AsyncTask(string sceneName, LoadSceneMode loadSceneMode, Action onCompletedLoadScene)
     {
-        await SceneManager.LoadSceneAsync(sceneBuildIndex, loadSceneMode);
+        await SceneManager.LoadSceneAsync(sceneName, loadSceneMode);
         onCompletedLoadScene?.Invoke();
-        Scene loadScene = SceneManager.GetSceneByBuildIndex(sceneBuildIndex);
-        Debug.Log($"Completed Load: {loadScene.name}");
+        Debug.Log($"Completed Load: {sceneName}");
     }
 
-    private async Task UnloadScene_AsyncTask(int sceneBuildIndex)
+    private async Task UnloadScene_AsyncTask(string sceneName, Action onCompletedLoadScene)
     {
-        await SceneManager.UnloadSceneAsync(sceneBuildIndex);
-        Scene unloadScene = SceneManager.GetSceneByBuildIndex(sceneBuildIndex);
-        Debug.Log($"Completed Unload: {unloadScene.name}");
+        await SceneManager.UnloadSceneAsync(sceneName);
+        onCompletedLoadScene?.Invoke();
+        Debug.Log($"Completed Unload: {sceneName}");
+    }
+
+    public bool IsSceneLoaded(string sceneName)
+    {
+        for (int index = 0; index < SceneManager.sceneCount; index++)
+        {
+            Scene scene = SceneManager.GetSceneAt(index);
+            if (scene.name == sceneName && scene.isLoaded)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool HasNotloadedSceneInHierarchy(string sceneName)
+    {
+        for (int index = 0; index < SceneManager.sceneCount; index++)
+        {
+            Scene scene = SceneManager.GetSceneAt(index);
+            if (scene.name == sceneName && !scene.isLoaded)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

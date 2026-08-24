@@ -6,13 +6,33 @@ public abstract class UIPresenter<TView> : MonoBehaviour where TView : UIView
     private CanvasDocument _canvasDocument;
     [SerializeField]
     private PopUpWindow[] _popUpWindows;
+    private TView _uiView;
 
     private void Awake()
     {
-        Initialize();
+        Initialize(ref _uiView);
     }
 
-    protected abstract void Initialize(TView uiView = null);
+    private void OnEnable()
+    {
+        ConnectWhenEnabled(_uiView);
+    }
+
+    private void OnDisable()
+    {
+        DisconnectWhenDisabled(_uiView);
+    }
+
+    protected abstract void Initialize(ref TView uiView);
+
+    /// <summary>
+    /// Enable 콜백 함수
+    /// </summary>
+    protected abstract void ConnectWhenEnabled(TView uiView);
+    /// <summary>
+    /// Disable 콜백 함수
+    /// </summary>
+    protected abstract void DisconnectWhenDisabled(TView uiView);
 
     protected T GetPopUpWindow<T>() where T : PopUpWindow
     {
@@ -26,5 +46,6 @@ public abstract class UIPresenter<TView> : MonoBehaviour where TView : UIView
         return null;
     }
 
-    public CanvasDocument GetCanvasDocument() => _canvasDocument;
+    protected CanvasDocument GetCanvasDocument() => _canvasDocument;
+    protected TView GetUIView() => _uiView;
 }

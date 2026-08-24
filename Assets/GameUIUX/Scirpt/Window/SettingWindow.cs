@@ -44,8 +44,9 @@ public class SettingWindow : PopUpWindow
     [SerializeField]
     private TMP_Text _settingName;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _exitSettingButton.onClick.AddListener(OnClockExitSettingButton);
         for (int i = 0; i < _settingButtons.Length; ++i)
         {
