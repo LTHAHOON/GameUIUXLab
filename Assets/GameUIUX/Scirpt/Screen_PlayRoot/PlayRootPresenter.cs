@@ -28,6 +28,9 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
 
     }
 
+    /// <summary>
+    /// OnClick: 게임 일시정지하기
+    /// </summary>
     private void OnClickCancel(InputAction.CallbackContext context)
     {
         if (!SceneLoadManager.Instance.IsSceneLoaded(_pauseMenuSceneName))
@@ -37,7 +40,7 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     }
 
     /// <summary>
-    /// PlayRoot_UI: Player 체력 설정
+    /// UI: Player 체력 설정
     /// </summary>
     public void SetHealthSliderValue(float currentHealth, float maxHealth = 100f)
     {
@@ -47,7 +50,7 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     }
 
     /// <summary>
-    /// PlayRoot_UI: Player 메시지 설정
+    /// UI: Player 메시지 설정
     /// </summary>
     public void SetMessageText(string message)
     {
@@ -55,10 +58,10 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
         uiView.MessageText.text = message;
     }
 
-    /// <summary>
-    /// PlayRoot_UI: Player 점수 설정
-    /// </summary>
     private StringBuilder _scoreBuilder;
+    /// <summary>
+    /// UI: Player 점수 설정
+    /// </summary>
     public void SetScoreText(int score)
     {
         PlayRootView uiView = GetUIView();

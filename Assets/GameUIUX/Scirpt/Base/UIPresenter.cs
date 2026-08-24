@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public abstract class UIPresenter<TView> : MonoBehaviour where TView : UIView
+public abstract class UIPresenter : MonoBehaviour { }
+public abstract class UIPresenter<TView> : UIPresenter where TView : UIView
 {
     [SerializeField]
     private CanvasDocument _canvasDocument;
@@ -11,16 +12,30 @@ public abstract class UIPresenter<TView> : MonoBehaviour where TView : UIView
     private void Awake()
     {
         Initialize(ref _uiView);
+        UIPresenterService.AddUIPresenter(this);
     }
 
     private void OnEnable()
     {
+        if (_canvasDocument)
+        {
+            _canvasDocument.gameObject.SetActive(true);
+        }
         ConnectWhenEnabled(_uiView);
     }
 
     private void OnDisable()
     {
+        if (_canvasDocument)
+        {
+            _canvasDocument.gameObject.SetActive(false);
+        }
         DisconnectWhenDisabled(_uiView);
+    }
+
+    private void OnDestroy()
+    {
+        UIPresenterService.RemoveUIPresenter(this);
     }
 
     protected abstract void Initialize(ref TView uiView);

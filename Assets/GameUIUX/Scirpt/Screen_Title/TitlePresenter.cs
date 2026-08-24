@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class TitlePresenter : UIPresenter<TitleView>
 {
@@ -25,33 +24,33 @@ public class TitlePresenter : UIPresenter<TitleView>
         uiView.SettingButton.onClick.RemoveListener(OnClickSettingButton);
     }
 
-
-    public void OnClickPlayButton()
+    /// <summary>
+    /// OnClick: 게임 플레이하기
+    /// </summary>
+    private void OnClickPlayButton()
     {
         Debug.Log("Play");
 
         void OnCompletedLoadScene()
         {
-            CanvasDocument canvasDocument = GetCanvasDocument();
-            canvasDocument.gameObject.SetActive(false);
+            UIPresenterService.SetActivePresenter<TitlePresenter>(false);
         }
         SceneLoadManager.Instance.LoadScene_Async(_playRootSceneName, LoadSceneMode.Additive, OnCompletedLoadScene);
     }
 
 
     private SettingWindow _settingWindow;
-    public void OnClickSettingButton()
+    /// <summary>
+    /// OnClick: 설정 창 열기
+    /// </summary>
+    private void OnClickSettingButton()
     {
         Debug.Log("Setting");
         if (!_settingWindow)
         {
             _settingWindow = GetPopUpWindow<SettingWindow>();
-            _settingWindow = PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
         }
-        else
-        {
-            PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
-        }
+        _settingWindow = PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
     }
 
 }

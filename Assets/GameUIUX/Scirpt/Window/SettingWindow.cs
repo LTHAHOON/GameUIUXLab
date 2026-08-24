@@ -44,6 +44,8 @@ public class SettingWindow : PopUpWindow
     [SerializeField]
     private TMP_Text _settingName;
 
+    public override bool CanDuplicateWindow => false;
+
     protected override void Awake()
     {
         base.Awake();

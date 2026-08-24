@@ -704,6 +704,8 @@ MonoBehaviour:
   _canvasDocument: {fileID: 264495494}
   _popUpWindows:
   - {fileID: 2043894338946632646, guid: 9bb5162ff02094e48b849ce46c48f9ab, type: 3}
+  _titleSceneName: UUXTitle_SubScene
+  _playRootSceneName: UIUXPlayRoot_SubScene
 --- !u!4 &1507004146
 Transform:
   m_ObjectHideFlags: 0
