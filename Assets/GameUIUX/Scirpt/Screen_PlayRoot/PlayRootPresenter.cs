@@ -1,19 +1,30 @@
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayRootPresenter : UIPresenter<PlayRootView>
 {
     [SerializeField]
     private string _pauseMenuSceneName;
+    [SerializeField]
+    private ToastMessage _toastMessagePrefab;
+    [SerializeField]
+    private VerticalLayoutGroup _toastMessageGroup;
+
+
+    private ToastMessageHandler _toastMessageHandler;
 
     protected override void Initialize(ref PlayRootView uiView)
     {
         CanvasDocument canvasDocument = GetCanvasDocument();
         uiView = new(canvasDocument);
+        _toastMessageHandler = new(_toastMessagePrefab, _toastMessageGroup);
     }
 
     protected override void ConnectWhenEnabled(PlayRootView uiView)
@@ -52,10 +63,18 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     /// <summary>
     /// UI: Player 메시지 설정
     /// </summary>
-    public void SetMessageText(string message)
+    public void ShowToastMessage(string toastMessageText)
     {
-        PlayRootView uiView = GetUIView();
-        uiView.MessageText.text = message;
+        if (_toastMessageHandler == null)
+        {
+            _toastMessageHandler = new(_toastMessagePrefab, _toastMessageGroup);
+        }
+        _toastMessageHandler.ShowToastMessage(toastMessageText);
+    }
+
+    public void ClearToastMessages()
+    {
+        _toastMessageHandler.ClearToastMessages();
     }
 
     private StringBuilder _scoreBuilder;
