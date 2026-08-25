@@ -22,6 +22,11 @@ public abstract class UIPresenter<TView> : UIPresenter where TView : UIView
             _canvasDocument.gameObject.SetActive(true);
         }
         ConnectWhenEnabled(_uiView);
+        InputService.OnChangedGamepad += FocusFirstButton;
+        if (InputService.CurrentInputMode == InputMode.Gamepad)
+        {
+            FocusFirstButton();
+        }
     }
 
     private void OnDisable()
@@ -31,6 +36,7 @@ public abstract class UIPresenter<TView> : UIPresenter where TView : UIView
             _canvasDocument.gameObject.SetActive(false);
         }
         DisconnectWhenDisabled(_uiView);
+        InputService.OnChangedGamepad -= FocusFirstButton;
     }
 
     private void OnDestroy()
@@ -60,6 +66,8 @@ public abstract class UIPresenter<TView> : UIPresenter where TView : UIView
         }
         return null;
     }
+
+    protected virtual void FocusFirstButton() { }
 
     protected CanvasDocument GetCanvasDocument() => _canvasDocument;
     protected TView GetUIView() => _uiView;

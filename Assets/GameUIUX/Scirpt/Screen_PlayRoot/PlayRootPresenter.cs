@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using NUnit.Framework;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -30,7 +31,6 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     protected override void ConnectWhenEnabled(PlayRootView uiView)
     {
         InputService.PlayerIA.UI.Cancel.performed += OnClickCancel;
-
     }
 
     protected override void DisconnectWhenDisabled(PlayRootView uiView)
@@ -57,7 +57,15 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     {
         PlayRootView uiView = GetUIView();
         float ratioHealth = Mathf.Clamp01(currentHealth / maxHealth);
-        uiView.HealthSlider.value = ratioHealth;
+        if (uiView != null)
+        {
+            uiView.HealthSlider.value = ratioHealth;
+        }
+        else
+        {
+            Slider healthSlider = GetCanvasDocument().GetUI<Slider>("Health_Slider");
+            healthSlider.value = ratioHealth;
+        }
     }
 
     /// <summary>
@@ -72,9 +80,9 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
         _toastMessageHandler.ShowToastMessage(toastMessageText);
     }
 
-    public void ClearToastMessages()
+    public void ResetToastMessages()
     {
-        _toastMessageHandler.ClearToastMessages();
+        _toastMessageHandler?.ResetToastMessages();
     }
 
     private StringBuilder _scoreBuilder;
@@ -83,12 +91,25 @@ public class PlayRootPresenter : UIPresenter<PlayRootView>
     /// </summary>
     public void SetScoreText(int score)
     {
+        score = Math.Max(0, score);
         PlayRootView uiView = GetUIView();
         if (_scoreBuilder == null)
         {
             _scoreBuilder = new();
         }
+
+        _scoreBuilder.Clear();
+        _scoreBuilder.Append("Score: ");
         _scoreBuilder.Append(score);
-        uiView.ScoreText.SetText(_scoreBuilder);
+
+        if (uiView != null)
+        {
+            uiView.ScoreText.SetText(_scoreBuilder);
+        }
+        else
+        {
+            TMP_Text scoreText = GetCanvasDocument().GetUI<TMP_Text>("Score_Text");
+            scoreText.SetText(_scoreBuilder);
+        }
     }
 }

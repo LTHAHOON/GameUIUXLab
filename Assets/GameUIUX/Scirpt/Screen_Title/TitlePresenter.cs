@@ -1,10 +1,15 @@
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class TitlePresenter : UIPresenter<TitleView>
 {
     [SerializeField]
     private string _playRootSceneName;
+
+    private Button _firstButton;
 
     protected override void Initialize(ref TitleView uiView)
     {
@@ -14,6 +19,7 @@ public class TitlePresenter : UIPresenter<TitleView>
 
     protected override void ConnectWhenEnabled(TitleView uiView)
     {
+        _firstButton = uiView.PlayButton;
         uiView.PlayButton.onClick.AddListener(OnClickPlayButton);
         uiView.SettingButton.onClick.AddListener(OnClickSettingButton);
     }
@@ -36,14 +42,16 @@ public class TitlePresenter : UIPresenter<TitleView>
             UIPresenterService.SetActivePresenter<TitlePresenter>(false);
         }
         SceneLoadManager.Instance.LoadScene_Async(_playRootSceneName, LoadSceneMode.Additive, OnCompletedLoadScene);
-    }
 
+        TitleView uiView = GetUIView();
+        _firstButton = uiView.PlayButton;
+    }
 
     private SettingWindow _settingWindow;
     /// <summary>
     /// OnClick: 설정 창 열기
     /// </summary>
-    private void OnClickSettingButton()
+    private async void OnClickSettingButton()
     {
         Debug.Log("Setting");
         if (!_settingWindow)
@@ -51,6 +59,28 @@ public class TitlePresenter : UIPresenter<TitleView>
             _settingWindow = GetPopUpWindow<SettingWindow>();
         }
         _settingWindow = PopUpManager.Instance.ChangePopUpState(PopUpState.Open, _settingWindow);
+        _settingWindow.RegisterCallbackOnClose(OnSettingWindowClosed);
+
+        TitleView uiView = GetUIView();
+        _firstButton = uiView.SettingButton;
+    }
+
+    private void OnSettingWindowClosed()
+    {
+        if (InputService.CurrentInputMode == InputMode.Gamepad)
+        {
+            FocusFirstButton();
+        }
+        _settingWindow.UnregisterCallbackOnClose(OnSettingWindowClosed);
+    }
+
+    protected override void FocusFirstButton()
+    {
+        if (_firstButton)
+        {
+            TitleView uiView = GetUIView();
+            EventSystem.current.SetSelectedGameObject(_firstButton.gameObject);
+        }
     }
 
 }

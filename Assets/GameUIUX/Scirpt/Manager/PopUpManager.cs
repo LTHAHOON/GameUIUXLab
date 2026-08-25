@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,10 +12,53 @@ public abstract class PopUpWindow : MonoBehaviour
 {
     public abstract bool CanDuplicateWindow { get; }
     public bool InitCompleted { get; private set; } = false;
-    protected virtual void Awake()
+    private Action OnOpenPopUpWindow;
+    private Action OnClosePopUpWindow;
+
+    private void Awake()
     {
         InitCompleted = true;
+        Initialize();
     }
+    private void OnEnable()
+    {
+        OnOpenPopUpWindow?.Invoke();
+        ConnectWhenEnabled();
+        if (InputService.CurrentInputMode == InputMode.Gamepad)
+        {
+            FocusFirstButton();
+        }
+    }
+    private void OnDisable()
+    {
+        OnClosePopUpWindow?.Invoke();
+        ConnectWhenDisabled();
+    }
+
+    protected abstract void Initialize();
+
+    protected abstract void ConnectWhenEnabled();
+    protected abstract void ConnectWhenDisabled();
+    protected virtual void FocusFirstButton() { }
+
+    public void RegisterCallbackOnOpen(Action onOpenPopUpWindow)
+    {
+        OnOpenPopUpWindow += onOpenPopUpWindow;
+    }
+    public void RegisterCallbackOnClose(Action onClosePopUpWindow)
+    {
+        OnClosePopUpWindow += onClosePopUpWindow;
+    }
+
+    public void UnregisterCallbackOnOpen(Action onOpenPopUpWindow)
+    {
+        OnOpenPopUpWindow -= onOpenPopUpWindow;
+    }
+    public void UnregisterCallbackOnClose(Action onClosePopUpWindow)
+    {
+        OnClosePopUpWindow -= onClosePopUpWindow;
+    }
+
 }
 
 public class PopUpManager : MonoBehaviour

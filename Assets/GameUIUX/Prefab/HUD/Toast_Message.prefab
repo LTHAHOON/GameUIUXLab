@@ -182,8 +182,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: This is Messeage.
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7c184ab43a983d0428801b550d1c33de, type: 2}
+  m_sharedMaterial: {fileID: -2073478675438647103, guid: 7c184ab43a983d0428801b550d1c33de, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -23,7 +23,7 @@ public class ToastMessageHandler
         toastMessage.StartToast();
     }
 
-    public void ClearToastMessages()
+    public void ResetToastMessages()
     {
         _toastMessagePool.Clear();
         if (!Application.isPlaying)
