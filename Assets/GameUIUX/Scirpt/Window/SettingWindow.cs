@@ -23,14 +23,17 @@ public class SettingWindow : PopUpWindow
         [SerializeField]
         private Toggle _settingButton;
         [SerializeField]
-        private UnityEvent<bool, SettingType, Toggle> _onClickEvent;
+        private GameObject _settingContent;
+        [SerializeField]
+        private UnityEvent<bool, SettingType, Toggle, GameObject> _onClickEvent;
 
         public void ConnectOnClickEvent()
         {
-            UnityEvent<bool, SettingType, Toggle> onClickEvent = _onClickEvent;
+            UnityEvent<bool, SettingType, Toggle, GameObject> onClickEvent = _onClickEvent;
             SettingType settingType = _settingType;
             Toggle settingButton = _settingButton;
-            _settingButton.onValueChanged.AddListener((isOn) => onClickEvent?.Invoke(isOn, settingType, settingButton));
+            GameObject settingContent = _settingContent;
+            _settingButton.onValueChanged.AddListener((isOn) => onClickEvent?.Invoke(isOn, settingType, settingButton, settingContent));
         }
         #endregion
 
@@ -40,13 +43,15 @@ public class SettingWindow : PopUpWindow
 
     [SerializeField]
     private SettingType _firstSettingType;
-    private Toggle _firstButton;
     [SerializeField]
     private SettingButtonInfo[] _settingButtons;
     [SerializeField]
     private Button _exitSettingButton;
     [SerializeField]
     private TMP_Text _settingName;
+
+    private GameObject _currentSettingContent;
+    private Toggle _firstButton;
 
     public override bool CanDuplicateWindow => false;
 
@@ -76,33 +81,36 @@ public class SettingWindow : PopUpWindow
         InputService.OnChangedGamepad -= FocusFirstButton;
     }
 
-    public void OnClickGraphicSettingButton(bool isOn, SettingType settingType, Toggle settingButton)
+    public void OnClickGraphicSettingButton(bool isOn, SettingType settingType, Toggle settingButton, GameObject settingContent)
     {
         if (!isOn)
         {
             return;
         }
         Debug.Log("Setting - Graphic");
+        ChangeActiveSettingContent(settingContent);
         SetSettingName(settingType);
     }
 
-    public void OnClickSoundSettingButton(bool isOn, SettingType settingType, Toggle settingButton)
+    public void OnClickSoundSettingButton(bool isOn, SettingType settingType, Toggle settingButton, GameObject settingContent)
     {
         if (!isOn)
         {
             return;
         }
         Debug.Log("Setting - Sound");
+        ChangeActiveSettingContent(settingContent);
         SetSettingName(settingType);
     }
 
-    public void OnClickInfoSettingButton(bool isOn, SettingType settingType, Toggle settingButton)
+    public void OnClickInfoSettingButton(bool isOn, SettingType settingType, Toggle settingButton, GameObject settingContent)
     {
         if (!isOn)
         {
             return;
         }
         Debug.Log("Setting - Info");
+        ChangeActiveSettingContent(settingContent);
         SetSettingName(settingType);
     }
 
@@ -116,6 +124,18 @@ public class SettingWindow : PopUpWindow
         Debug.Log("Setting - Exit");
         ResetToFirstSetting();
         PopUpManager.Instance.ChangePopUpState(PopUpState.Close, this);
+    }
+
+    private void ChangeActiveSettingContent(GameObject settingContent)
+    {
+        if (_currentSettingContent)
+        {
+            _currentSettingContent.SetActive(false);
+        }
+        _currentSettingContent = settingContent;
+        Debug.Log(_currentSettingContent);
+        settingContent.SetActive(true);
+
     }
 
     private void SetSettingName(SettingType settingType)
@@ -166,8 +186,7 @@ public class SettingWindow : PopUpWindow
         }
 
         _firstButton.group?.SetAllTogglesOff(false);
-        _firstButton.SetIsOnWithoutNotify(true);
-        SetSettingName(_firstSettingType);
+        _firstButton.isOn = true;
     }
 
 }
