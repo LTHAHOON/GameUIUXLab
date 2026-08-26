@@ -23,7 +23,7 @@ public class ToastMessage : MonoBehaviour
         }
         _toastMessageText.text = toastMessageText;
 
-        //Background Height 강제
+        //Background Height 강제 업데이트
         LayoutRebuilder.ForceRebuildLayoutImmediate(_toastBackground);
 
         RectTransform toastRect = transform as RectTransform;
