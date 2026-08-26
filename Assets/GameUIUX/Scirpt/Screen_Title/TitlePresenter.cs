@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -22,12 +21,14 @@ public class TitlePresenter : UIPresenter<TitleView>
         _firstButton = uiView.PlayButton;
         uiView.PlayButton.onClick.AddListener(OnClickPlayButton);
         uiView.SettingButton.onClick.AddListener(OnClickSettingButton);
+        uiView.ExitButton.onClick.AddListener(OnClickExitButton);
     }
 
     protected override void DisconnectWhenDisabled(TitleView uiView)
     {
         uiView.PlayButton.onClick.RemoveListener(OnClickPlayButton);
         uiView.SettingButton.onClick.RemoveListener(OnClickSettingButton);
+        uiView.ExitButton.onClick.RemoveListener(OnClickExitButton);
     }
 
     /// <summary>
@@ -75,11 +76,19 @@ public class TitlePresenter : UIPresenter<TitleView>
         _settingWindow.UnregisterCallbackOnClose(OnSettingWindowClosed);
     }
 
+    private void OnClickExitButton()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
     protected override void FocusFirstButton()
     {
         if (_firstButton)
         {
-            TitleView uiView = GetUIView();
             EventSystem.current.SetSelectedGameObject(_firstButton.gameObject);
         }
     }
