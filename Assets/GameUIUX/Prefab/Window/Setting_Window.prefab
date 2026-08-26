@@ -767,7 +767,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingWindow
   _firstSettingType: 0
-  _firstButton: {fileID: 0}
   _settingButtons:
   - _settingType: 0
     _settingButton: {fileID: 7419578860256291421}

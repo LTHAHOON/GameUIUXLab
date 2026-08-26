@@ -33,11 +33,6 @@ public class PauseMenuPresenter : UIPresenter<PauseMenuView>
         uiView.ResumeButton.onClick.RemoveListener(OnClickResumeButton);
         uiView.OptionButton.onClick.RemoveListener(OnClickOptionButton);
         uiView.QuitButton.onClick.RemoveListener(OnClickQuit);
-
-        if (_settingWindow)
-        {
-            _settingWindow.UnregisterCallbackOnClose(OnSettingWindowClosed);
-        }
     }
 
     /// <summary>
@@ -73,6 +68,7 @@ public class PauseMenuPresenter : UIPresenter<PauseMenuView>
         _settingWindow.RegisterCallbackOnClose(OnSettingWindowClosed);
         PauseMenuView uiView = GetUIView();
         _firstButton = uiView.OptionButton;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void OnSettingWindowClosed()

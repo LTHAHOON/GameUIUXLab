@@ -51,7 +51,7 @@ public class TitlePresenter : UIPresenter<TitleView>
     /// <summary>
     /// OnClick: 설정 창 열기
     /// </summary>
-    private async void OnClickSettingButton()
+    private void OnClickSettingButton()
     {
         Debug.Log("Setting");
         if (!_settingWindow)
@@ -63,6 +63,7 @@ public class TitlePresenter : UIPresenter<TitleView>
 
         TitleView uiView = GetUIView();
         _firstButton = uiView.SettingButton;
+        EventSystem.current.SetSelectedGameObject(null);
     }
 
     private void OnSettingWindowClosed()

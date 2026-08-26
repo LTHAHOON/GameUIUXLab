@@ -7611,7 +7611,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
-  m_FirstSelected: {fileID: 1832161247}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1463486055
@@ -7870,7 +7870,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5773010780641242820, guid: 4010c8f64d1294440bbcc65e83674fad, type: 3}
   m_PrefabInstance: {fileID: 2610827382970512050}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1832161247}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7f48e090e4b7094ea3412097e97b9a4, type: 3}
@@ -8826,11 +8826,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1822465880}
   m_CullTransparentMesh: 1
---- !u!1 &1832161247 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5620745460559007997, guid: 4010c8f64d1294440bbcc65e83674fad, type: 3}
-  m_PrefabInstance: {fileID: 2610827382970512050}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1845879965 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1585452774897765868, guid: 4010c8f64d1294440bbcc65e83674fad, type: 3}

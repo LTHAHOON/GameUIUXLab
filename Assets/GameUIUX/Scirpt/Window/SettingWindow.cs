@@ -40,7 +40,6 @@ public class SettingWindow : PopUpWindow
 
     [SerializeField]
     private SettingType _firstSettingType;
-    [SerializeField]
     private Toggle _firstButton;
     [SerializeField]
     private SettingButtonInfo[] _settingButtons;
