@@ -1,5 +1,7 @@
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
 
 [CustomEditor(typeof(CanvasUIBinder))]
 public class CanvasUIBindEditor : Editor
@@ -20,6 +22,7 @@ public class CanvasUIBindEditor : Editor
     }
 
 }
+#endif
 
 public class CanvasUIBinder : MonoBehaviour
 {
